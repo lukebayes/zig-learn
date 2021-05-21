@@ -28,20 +28,49 @@ error: the following build command failed with exit code 1:
 /home/lukebayes/Projects/learning/zig/win-link/zig-cache/o/ef988d19f9b3df84910ba28c7b165b94/build /home/lukebayes/src/zig-linux-x86_64-0.8.0-dev.2275+8467373bb/zig /home/lukebayes/Projects/learning/zig/win-link /home/lukebayes/Projects/learning/zig/win-link/zig-cache /home/lukebayes/.cache/zig -Dtarget=x86_64-windows-gnu
 ```
 
-## Building a library with native links across platforms
-As a sanity check, does this structure look like idiomatic zig?
+Some things I've tried:
+
+1) Build it with zig version 0.7, same problem (I think), but v0.8x has much more helpful error messages
+
+2) Check out the `zig-cache/o/[hash]/cimport.zig` file. These 3 definitions are clearly declared and externed in that file. I'm assuming this is irrelevant as these declarations are like C headers, and probably only helpful before the link phase?
+
+3) Even if I null out the two CLSID_MMDeviceEnumerator and IID_IMMDeviceEnumerator, I still get the same failure on CoCreateInstance
+
+4) Remove the mm namespace prefix from CoCreateInstance so that the `usingnamespace std.os.windows` is used (same result)
+
+5) Comment (and uncomment) a bunch of Windows DLLs from the library build definition. Pretty sure `CoCreateInstance` is in the `ole32` dll, but I'm not 100% certain, just trying some shotgun ideas to get unblocked...
+```zig
+    if (is_windows) {
+        // Uncommenting the following, still leaves me with three errors
+        // "error: undefined symbol: CoCreateInstance"
+        // "error: undefined symbol: CLSID_MMDeviceEnumerator"
+        // "error: undefined symbol: IID_IMMDeviceEnumerator"
+        lib.linkSystemLibrary("advapi32");
+        lib.linkSystemLibrary("comdlg32");
+        lib.linkSystemLibrary("gdi32");
+        lib.linkSystemLibrary("kernel32");
+        lib.linkSystemLibrary("ole32");
+        lib.linkSystemLibrary("oleaut32");
+        lib.linkSystemLibrary("user32");
+        lib.linkSystemLibrary("uuid");
+    }
+```
+
+6) Verified that I can talk to **some** windows APIs, by loading and showing a MessageBox from [this example](https://www.reddit.com/r/Zig/comments/cf7ggv/is_there_an_example_windows_message_box_hello/).
+
+## Building a general library that loads and brings native libraries on host platforms
 
 Are there better ways to do what I'm trying to do here?
 
-Essentially, I want to have a single interface with concrete implementations across a variety of supported platforms.
+Some things I'm not sure about are:
 
-Some things I don't like about this approach:
-
-1) Because the entire interface is defined in each platform file, it's too easy to modify it for one platform and break it for another.
+1) Because the entire interface is defined in each platform file, it's too easy to modify it for one platform which breaks it for another.
 2) There's quite a bit of duplication across the platform definitions
-3) I was trying to do something [like this](https://www.nmichaels.org/zig/interfaces.html) with a more functional approach, but I couldn't get the type system to play nice with my concrete type(s).
+3) I was trying to do something [like this](https://www.nmichaels.org/zig/interfaces.html) with a more functional approach, but I couldn't get the type system to play nice with my concrete type(s). It felt like I needed to either (a) create circular dependencies to bring shared definitions into the native modules or (b) push platform-specific comptime types all over the application.
 
-## Platform builds
+I've got that nagging feeling that I've just missed something simple somewhere.
+
+## Platform-specific build artifacts
 I'd prefer to have an "all" task that builds all of the artifacts I expect and then to be able to limit that with specific task names.
 
 For example, I would like `zig build` create the following artifacts, without regard for the host OS.
@@ -52,4 +81,6 @@ For example, I would like `zig build` create the following artifacts, without re
 * Windows dynamic library
 * Linux executable
 * Windows executable
+
+Tips appreciated!
 

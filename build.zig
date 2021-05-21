@@ -29,19 +29,18 @@ pub fn build(b: *std.build.Builder) void {
     lib.setOutputDir("dist");
     lib.linkLibC();
     if (is_windows) {
-
-        // Uncommenting the following, still leaves me with:
+        // Uncommenting the following, still leaves me with three errors
         // "error: undefined symbol: CoCreateInstance"
         // "error: undefined symbol: CLSID_MMDeviceEnumerator"
         // "error: undefined symbol: IID_IMMDeviceEnumerator"
-        lib.linkSystemLibrary("kernel32");
-        lib.linkSystemLibrary("gdi32");
-        lib.linkSystemLibrary("user32");
-        lib.linkSystemLibrary("advapi32");
-        lib.linkSystemLibrary("comdlg32");
-        lib.linkSystemLibrary("ole32");
-        lib.linkSystemLibrary("oleaut32");
-        lib.linkSystemLibrary("uuid");
+        // lib.linkSystemLibrary("advapi32");
+        // lib.linkSystemLibrary("comdlg32");
+        // lib.linkSystemLibrary("gdi32");
+        // lib.linkSystemLibrary("kernel32");
+        // lib.linkSystemLibrary("ole32");
+        // lib.linkSystemLibrary("oleaut32");
+        // lib.linkSystemLibrary("user32");
+        // lib.linkSystemLibrary("uuid");
     }
     lib.install();
 
