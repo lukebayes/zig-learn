@@ -3,7 +3,7 @@
 # Zig Questions
 First of all, even though I've hit some stumbling blocks, I'm really enjoying the language and looking forward to getting productive with it.
 
-Huge thanks to all the folks who have worked so hard on it, especially [Andy](https://github.com/andrewrk/). Please don't let the bastards get you down!
+Huge thanks to all the folks who have worked so hard on it, especially [Andy](https://github.com/andrewrk/). Please don't let the bastards (or the bugs) get you down! You've all made something exceptional here.
 
 Here's some introductory info:
 
