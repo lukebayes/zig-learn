@@ -1,3 +1,5 @@
+![](assets/ziglander.png)
+
 # Zig Questions
 First of all, even though I've hit some stumbling blocks, I'm really enjoying the language and looking forward to getting productive with it.
 
