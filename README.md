@@ -1,9 +1,9 @@
 # Zig Questions
-This project is being built on Ubuntu 20.10 and zig version 0.8.0-dev.2275+8467373bb.
-
 First of all, even though I've hit some stumbling blocks, I'm really enjoying the language and looking forward to getting productive with it.
 
 Here's some introductory info:
+
+I'm building and running on `Ubuntu 20.04.2 LTS` and `zig version 0.8.0-dev.2275+8467373bb`.
 
 Build and run for Linux with: `zig build run`
 
