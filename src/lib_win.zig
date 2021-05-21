@@ -23,16 +23,10 @@ pub fn info() []const u8 {
 
 pub fn getDefaultDevice() AudioDevice {
     std.debug.print("getDefaultDevice\n", .{});
+
+    // Comment the following 2 lines to get a working Windows build.
     var ptr: ?*c_void = null;
     var status: HRESULT = mm.CoCreateInstance(&mm.CLSID_MMDeviceEnumerator, null, mm.CLSCTX_ALL, &mm.IID_IMMDeviceEnumerator, &ptr);
-
-    // var status: mm.HRESULT = mm.CoCreateInstance(CLSID_MMDeviceEnumerator, null, mm.CLSCTX_ALL, &mm.IID_IMMDeviceEnumerator, &enumerator);
-    // EXIT_ON_ERROR(status, "CoCreateInstance with p_enumerator failed");
-
-    // status = IMMDeviceEnumerator_GetDefaultAudioEndpoint(enumerator, datadir,
-    //     role, device);
-    // EXIT_ON_ERROR(status, "GetDefaultAudioEndpoint failed");
-    // log_info("get_default_device returned");
     return AudioDevice{};
 }
 

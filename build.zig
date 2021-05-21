@@ -21,7 +21,7 @@ pub fn build(b: *std.build.Builder) void {
     std.debug.print("Builder is_windows: {s}\n", .{is_windows});
 
     // Build a shared lib
-    const lib = b.addSharedLibrary("sdk", "lib.zig", version);
+    const lib = b.addSharedLibrary("sdk", "src/lib.zig", version);
     // TODO(lbayes): Figure out how to emit a .h file for external
     // project inclusion.
     lib.setTarget(target);
@@ -46,7 +46,7 @@ pub fn build(b: *std.build.Builder) void {
     lib.install();
 
     // Build a console client that loads the shared lib statically
-    const exe = b.addExecutable("console", "main.zig");
+    const exe = b.addExecutable("console", "src/main.zig");
     exe.setTarget(target);
     exe.setBuildMode(mode);
     exe.setOutputDir("dist");
@@ -54,7 +54,7 @@ pub fn build(b: *std.build.Builder) void {
     // How to make this dynamically link?
     exe.addPackage(.{
         .name = "sdk",
-        .path = "lib.zig",
+        .path = "src/lib.zig",
     });
     exe.step.dependOn(&lib.step);
     exe.install();
