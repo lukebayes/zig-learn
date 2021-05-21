@@ -28,8 +28,8 @@ pub fn build(b: *std.build.Builder) void {
     lib.setBuildMode(mode);
     lib.setOutputDir("dist");
     lib.linkLibC();
-    // lib.linkSystemLibrary("c");
     if (is_windows) {
+
         // Uncommenting the following, still leaves me with:
         // "error: undefined symbol: CoCreateInstance"
         // "error: undefined symbol: CLSID_MMDeviceEnumerator"
