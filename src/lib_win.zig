@@ -27,7 +27,6 @@ pub fn getDefaultDevice() AudioDevice {
     // Comment the following 2 lines to get a working Windows build.
     var ptr: ?*c_void = null;
     var status: HRESULT = mm.CoCreateInstance(&mm.CLSID_MMDeviceEnumerator, null, mm.CLSCTX_ALL, &mm.IID_IMMDeviceEnumerator, &ptr);
-    // var status: HRESULT = mm.CoCreateInstance(null, null, mm.CLSCTX_ALL, null, &ptr);
     return AudioDevice{};
 }
 

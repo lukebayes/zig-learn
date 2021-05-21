@@ -1,6 +1,8 @@
 # Zig Questions
 First of all, even though I've hit some stumbling blocks, I'm really enjoying the language and looking forward to getting productive with it.
 
+Huge thanks to all the folks who have worked so hard on it, especially [Andy](https://github.com/andrewrk/). Please don't let the bastards get you down!
+
 Here's some introductory info:
 
 I'm building and running on `Ubuntu 20.04.2 LTS` and `zig version 0.8.0-dev.2275+8467373bb`.
@@ -61,6 +63,22 @@ Some things I've tried:
 ```
 
 6) Verified that I can talk to **some** windows APIs, by loading and showing a MessageBox from [this example](https://www.reddit.com/r/Zig/comments/cf7ggv/is_there_an_example_windows_message_box_hello/).
+
+7) Comment and uncomment other cInclude statements in the lib_win.zig file.
+
+```zig
+const mm = @cImport({
+    @cDefine("WIN32_LEAN_AND_MEAN", "1");
+    @cInclude("windows.h");
+    @cInclude("mmdeviceapi.h");
+    @cInclude("audioclient.h");
+    @cInclude("combaseapi.h");
+});
+
+// also swap the using statement and mm. prefixes elsewhere.
+```
+
+Any tips would be appreciated!
 
 ## Building a general library that loads and brings native libraries on host platforms
 
